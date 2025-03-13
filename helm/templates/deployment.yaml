@@ -1,0 +1,117 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: "{{ .Chart.Name }}"
+  labels:
+    app: "{{ .Chart.Name }}"
+    chart: "{{ .Chart.Name }}-{{ .Chart.Version }}"
+    release: "{{ .Release.Name }}"
+    heritage: "{{ .Release.Service }}"
+spec:
+  strategy:
+    type: Recreate
+  replicas: 1
+  selector:
+    matchLabels:
+      app: "{{ .Chart.Name }}"
+      release: "{{ .Release.Name }}"
+  template:
+    metadata:
+      labels:
+        app: "{{ .Chart.Name }}"
+        release: "{{ .Release.Name }}"
+    spec:
+      securityContext:
+        runAsUser: 10000
+        runAsGroup: 10000
+        fsGroup: 10000
+      containers:
+      - name: "{{ .Chart.Name }}"
+        image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+        imagePullPolicy: {{ .Values.image.pullPolicy }}
+        resources:
+{{ toYaml .Values.resources | indent 10 }}
+        env:
+        - name: ADMIN_PASSWORD
+          value: {{ .Values.config.adminPassword | squote }}
+        - name: ADMIN_USERNAME
+          value: {{ .Values.config.adminUsername | squote }}
+        - name: AUTOSAVE_INTERVAL
+          value: {{ .Values.config.autosaveInterval | int | quote }}
+        - name: BACKUPS_COUNT
+          value: {{ .Values.config.backupsCount | int | quote }}
+        - name: BACKUPS_PERIOD
+          value: {{ .Values.config.backupsPeriod | int | quote }}
+        - name: DIRECT_PORT
+          value: {{ .Values.config.directPort | squote }}
+        - name: GAME_PORT
+          value: {{ .Values.config.gamePort | squote }}
+        - name: MAP_NAMES
+          value: {{ .Values.config.mapNames | squote }}
+        - name: MAX_MEMORY
+          value: {{ .Values.config.maxMemory | squote }}
+        - name: MAX_PLAYERS
+          value: {{ .Values.config.maxPlayers | squote }}
+        {{- if .Values.config.modIDs }}
+        - name: MOD_IDS
+          value: {{ .Values.config.modIDs | squote }}
+        {{- end }}
+        {{- if .Values.config.modNames }}
+        - name: MOD_NAMES
+          value: {{ .Values.config.modNames | squote }}
+        {{- end }}
+        - name: PAUSE_EMPTY
+          value: {{ .Values.config.pauseEmpty | squote }}
+        - name: PING_LIMIT
+          value: {{ .Values.config.pingLimit | int | quote }}
+        - name: PVP
+          value: {{ .Values.config.pvp | squote }}
+        - name: PUBLIC
+          value: {{ .Values.config.public | squote }}
+        {{- if .Values.config.rconPassword }}
+        - name: RCON_PASSWORD
+          value: {{ .Values.config.rconPassword | squote }}
+        {{- end }}
+        {{- if .Values.config.rconPort }}
+        - name: RCON_PORT
+          value: {{ .Values.config.rconPort | squote }}
+        {{- end }}
+        {{- if .Values.config.serverIP }}
+        - name: SERVER_IP
+          value: {{ .Values.config.serverIP | squote }}
+        {{- end }}
+        - name: SERVER_NAME
+          value: {{ .Values.config.serverName | squote }}
+        {{- if .Values.config.serverPassword }}
+        - name: SERVER_PASSWORD
+          value: {{ .Values.config.serverPassword | squote }}
+        {{- end }}
+        - name: STEAM_VAC
+          value: {{ .Values.config.steamVAC | squote }}
+        ports:
+        - name: game-port
+          containerPort: {{ .Values.config.gamePort | int }}
+          protocol: UDP
+        - name: direct-port
+          containerPort: {{ .Values.config.directPort | int }}
+          protocol: UDP
+        {{- if .Values.config.rconPort }}
+        - name: rcon-port
+          containerPort: {{ .Values.config.rconPort | int }}
+          protocol: TCP
+        {{- end }}
+        volumeMounts:
+        - name: server
+          mountPath: /home/steam/zomboid
+        - name: data
+          mountPath: /home/steam/zomboid_data
+        securityContext:
+          allowPrivilegeEscalation: false
+          
+      volumes:
+      - name: server
+        persistentVolumeClaim:
+          claimName: "{{ .Chart.Name }}-server"
+      - name: data
+        persistentVolumeClaim:
+          claimName: "{{ .Chart.Name }}-data"
