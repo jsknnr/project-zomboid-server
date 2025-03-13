@@ -1,0 +1,46 @@
+image:
+  repository: sknnr/zomboid-dedicated-server
+  tag: latest
+  pullPolicy: Always
+
+service:
+  type: LoadBalancer
+  externalIPs: []
+  annotations: {}
+
+resources:
+  requests:
+    memory: 12G
+    cpu: 6.0
+
+volumes:
+  serverPVC:
+    size: 50Gi
+  dataPVC:
+    size: 50Gi
+  storageClassName: ""
+
+config:
+  antiCheatType21: "true"
+  adminPassword: "AdminPleaseChangeMe"
+  adminUsername: "admin"
+  autosaveInterval: 15
+  backupsCount: 5
+  backupsPeriod: 120
+  directPort: "16262"
+  gamePort: "16261"
+  mapNames: "Muldraugh, KY"
+  maxMemory: "10g"
+  maxPlayers: "16"
+  modIDs: ""
+  modNames: ""
+  pauseEmpty: "true"
+  pingLimit: 400
+  pvp: "true"
+  public: "true"
+  rconPassword: "RCONPleaseChangeMe"
+  rconPort: "27015"
+  serverIP: ""
+  serverName: "Zomboid Containerized"
+  serverPassword: ""
+  steamVAC: "true"

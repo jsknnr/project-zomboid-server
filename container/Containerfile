@@ -1,0 +1,75 @@
+FROM debian:12-slim
+
+ARG OPEN_JDK_URL="https://download.java.net/java/GA/jdk23.0.2/6da2a6609d6e406f85c491fcb119101b/7/GPL/openjdk-23.0.2_linux-x64_bin.tar.gz"
+ARG RCON_CLI_URL="https://github.com/gorcon/rcon-cli/releases/download/v0.10.3/rcon-0.10.3-amd64_linux.tar.gz"
+ARG STEAMCMD_URL="https://steamcdn-a.akamaihd.net/client/installer/steamcmd_linux.tar.gz"
+ARG CONTAINER_UID=10000
+ARG CONTAINER_GID=10000
+
+ENV DEBIAN_FRONTEND="noninteractive"
+ENV ZOMBOID_PATH="/home/steam/zomboid"
+ENV ZOMBOID_DATA_PATH="/home/steam/zomboid_data"
+ENV STEAMCMD_PATH="/home/steam/steamcmd"
+ENV STEAM_SDK64_PATH="/home/steam/.steam/sdk64"
+ENV STEAM_APP_ID=380870
+ENV JAVA_HOME="/usr/local/jdk-23.0.2"
+
+ENV ANTI_CHEAT_TYPE21=true
+ENV ADMIN_PASSWORD="AdminPleaseChangeMe"
+ENV ADMIN_USERNAME="admin"
+ENV AUTOSAVE_INTERVAL=15
+ENV BACKUPS_COUNT=5
+ENV BACKUPS_PERIOD=120
+ENV DIRECT_PORT=16262
+ENV GAME_PORT=16261
+ENV INIT_TIMEOUT=60
+ENV MAP_NAMES="Muldraugh, KY"
+ENV MAX_PLAYERS=16
+ENV PAUSE_EMPTY=true
+ENV PING_LIMIT=400
+ENV PVP=true
+ENV PUBLIC=true
+ENV SERVER_NAME="PZ Containerized"
+ENV STEAM_VAC=true
+
+RUN groupadd -g ${CONTAINER_GID} steam \
+    && useradd -g ${CONTAINER_GID} -u ${CONTAINER_UID} -m steam \
+    && dpkg --add-architecture i386 \
+    && apt-get update \
+    && apt-get install -y --no-install-recommends \
+        ca-certificates \
+        curl \
+        lib32gcc-s1 \
+        python3.11 \
+        locales \
+        vim \
+    && ln -s /usr/bin/python3.11 /usr/bin/python3 \
+    && echo 'LANG="en_US.UTF-8"' > /etc/default/locale \
+    && echo "en_US.UTF-8 UTF-8" >> /etc/locale.gen \
+    && locale-gen \
+    && curl -sqL "${OPEN_JDK_URL}" | tar zxvf - -C "/usr/local" \
+    && curl -sqL "${RCON_CLI_URL}" | tar zxvf - \
+    && mv rcon-0.10.3-amd64_linux/rcon /usr/local/bin/rcon \
+    && chmod +x /usr/local/bin/rcon \
+    && rm -rf ./rcon-0.10.3-amd64_linux \
+    && rm -rf /var/lib/apt/lists/* \
+    && apt-get clean \
+    && apt-get autoremove -y
+
+USER steam
+
+COPY entrypoint.sh /home/steam/entrypoint.sh
+COPY config_editor.py /home/steam/config_editor.py
+
+RUN mkdir -p "${ZOMBOID_PATH}" \
+    && mkdir -p "${STEAMCMD_PATH}" \
+    && mkdir -p "${STEAM_SDK64_PATH}" \
+    && curl -sqL "${STEAMCMD_URL}" | tar zxvf - -C "${STEAMCMD_PATH}" \
+    && chmod +x "${STEAMCMD_PATH}/steamcmd.sh" \
+    && "${STEAMCMD_PATH}/steamcmd.sh" +quit \
+    && mkdir -p "${STEAM_SDK64_PATH}" \
+    && cp "${STEAMCMD_PATH}/linux64/steamclient.so" "${STEAM_SDK64_PATH}/steamclient.so"
+
+WORKDIR /home/steam
+
+CMD ["/home/steam/entrypoint.sh"]
