@@ -9,7 +9,7 @@ timestamp () {
 shutdown () {
     echo ""
     echo "$(timestamp) INFO: Shutting down gracefully"
-    if [ -n "${RCON_PASSWORD}" ] && [ -n "${RCON_PORT}" ]; then
+    if [ -n "${RCON_PASSWORD}" ] && [ -n "${RCON_PORT}" ] && [ -z "${FIRST_RUN}" ]; then
       echo "$(timestamp) INFO: Sending shutdown command to RCON"
       rcon --address "${SERVER_IP}:${RCON_PORT}" --password "${RCON_PASSWORD}" quit 
     else
@@ -30,6 +30,7 @@ start_zomboid () {
 # Initialize server configuration if it doesn't exist
 init_server () {
   if [ ! -f "${SERVER_CONFIG}" ]; then
+    FIRST_RUN=true
     echo "$(timestamp) INFO: Initializing server configuration"
     echo "$(timestamp) INFO: Server will run for 60 seconds to generate configuration"
     start_zomboid "${LAUNCH_ARGS[@]}"
@@ -37,6 +38,7 @@ init_server () {
     sleep "$INIT_TIMEOUT"
     shutdown
     echo "$(timestamp) INFO: Initialization complete"
+    unset FIRST_RUN
   fi
 }
 
