@@ -21,6 +21,7 @@ volumes:
   storageClassName: ""
 
 config:
+  antiCheatType21: "true"
   adminPassword: "AdminPleaseChangeMe"
   adminUsername: "admin"
   autosaveInterval: 15

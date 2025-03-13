@@ -32,6 +32,8 @@ spec:
         resources:
 {{ toYaml .Values.resources | indent 10 }}
         env:
+        - name: ANTI_CHEAT_TYPE21
+          value: {{ .Values.config.antiCheatType21 | squote }}
         - name: ADMIN_PASSWORD
           value: {{ .Values.config.adminPassword | squote }}
         - name: ADMIN_USERNAME

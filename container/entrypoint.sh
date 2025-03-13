@@ -67,40 +67,42 @@ modify_server_config () {
   echo ""
   echo "$(timestamp) INFO: Updating server configuration"
   config_editor --config "${SERVER_CONFIG}" --key SaveWorldEveryMinutes --value "${AUTOSAVE_INTERVAL}"
-  echo "$(timestamp) INFO: SaveWorldEveryMinutes set to ${AUTOSAVE_INTERVAL} minutes"
+  echo "$(timestamp) INFO: SaveWorldEveryMinutes set to: ${AUTOSAVE_INTERVAL} minutes"
   config_editor --config "${SERVER_CONFIG}" --key BackupsCount --value "${BACKUPS_COUNT}"
-  echo "$(timestamp) INFO: BackupsCount set to ${BACKUPS_COUNT}"
+  echo "$(timestamp) INFO: BackupsCount set to: ${BACKUPS_COUNT}"
   config_editor --config "${SERVER_CONFIG}" --key BackupsPeriod --value "${BACKUPS_PERIOD}"
-  echo "$(timestamp) INFO: BackupsPeriod set to ${BACKUPS_PERIOD}"
+  echo "$(timestamp) INFO: BackupsPeriod set to: ${BACKUPS_PERIOD}"
   config_editor --config "${SERVER_CONFIG}" --key UDPPort --value "${DIRECT_PORT}"
-  echo "$(timestamp) INFO: UDPPort set to ${DIRECT_PORT}"
+  echo "$(timestamp) INFO: UDPPort set to: ${DIRECT_PORT}"
   config_editor --config "${SERVER_CONFIG}" --key DefaultPort --value "${GAME_PORT}"
-  echo "$(timestamp) INFO: DefaultPort set to ${GAME_PORT}"
+  echo "$(timestamp) INFO: DefaultPort set to: ${GAME_PORT}"
   config_editor --config "${SERVER_CONFIG}" --key Map --value "${MAP_NAMES}"
-  echo "$(timestamp) INFO: Map set to ${MAP_NAMES}"
+  echo "$(timestamp) INFO: Map set to: ${MAP_NAMES}"
   config_editor --config "${SERVER_CONFIG}" --key MaxPlayers --value "${MAX_PLAYERS}"
-  echo "$(timestamp) INFO: MaxPlayers set to ${MAX_PLAYERS}"
+  echo "$(timestamp) INFO: MaxPlayers set to: ${MAX_PLAYERS}"
   config_editor --config "${SERVER_CONFIG}" --key PauseEmpty --value "${PAUSE_EMPTY}"
-  echo "$(timestamp) INFO: PauseEmpty set to ${PAUSE_EMPTY}"
+  echo "$(timestamp) INFO: PauseEmpty set to: ${PAUSE_EMPTY}"
   config_editor --config "${SERVER_CONFIG}" --key PingLimit --value "${PING_LIMIT}"
-  echo "$(timestamp) INFO: PingLimit set to ${PING_LIMIT}"
+  echo "$(timestamp) INFO: PingLimit set to: ${PING_LIMIT}"
   config_editor --config "${SERVER_CONFIG}" --key PVP --value "${PVP}"
-  echo "$(timestamp) INFO: PVP set to ${PVP}"
+  echo "$(timestamp) INFO: PVP set to: ${PVP}"
   config_editor --config "${SERVER_CONFIG}" --key Public --value "${PUBLIC}"
-  echo "$(timestamp) INFO: Public set to ${PUBLIC}"
+  echo "$(timestamp) INFO: Public set to: ${PUBLIC}"
   config_editor --config "${SERVER_CONFIG}" --key PublicName --value "${SERVER_NAME}"
-  echo "$(timestamp) INFO: PublicName set to ${SERVER_NAME}"
+  echo "$(timestamp) INFO: PublicName set to: ${SERVER_NAME}"
   config_editor --config "${SERVER_CONFIG}" --key SteamVAC --value "${STEAM_VAC}"
-  echo "$(timestamp) INFO: SteamVAC set to ${STEAM_VAC}"
+  echo "$(timestamp) INFO: SteamVAC set to: ${STEAM_VAC}"
+  config_editor --config "${SERVER_CONFIG}" --key AntiCheatProtectionType21 --value "${ANTI_CHEAT_TYPE21}"
+  echo "$(timestamp) INFO: AntiCheatProtectionType21 set to: ${ANTI_CHEAT_TYPE21}"
 
   if [ -n "${MOD_IDS}" ]; then
     config_editor --config "${SERVER_CONFIG}" --key WorkshopItems --value "${MOD_IDS}"
-    echo "$(timestamp) INFO: WorkshopItems set to ${MOD_IDS}"
+    echo "$(timestamp) INFO: WorkshopItems set to: ${MOD_IDS}"
   fi
 
   if [ -n "${MOD_NAMES}" ]; then
     config_editor --config "${SERVER_CONFIG}" --key Mods --value "${MOD_NAMES}"
-    echo "$(timestamp) INFO: Mods set to ${MOD_NAMES}"
+    echo "$(timestamp) INFO: Mods set to: ${MOD_NAMES}"
   fi
 
   if [ -n "${RCON_PASSWORD}" ]; then
@@ -110,7 +112,7 @@ modify_server_config () {
 
   if [ -n "${RCON_PORT}" ]; then
     config_editor --config "${SERVER_CONFIG}" --key RCONPort --value "${RCON_PORT}"
-    echo "$(timestamp) INFO: RCONPort set to ${RCON_PORT}"
+    echo "$(timestamp) INFO: RCONPort set to: ${RCON_PORT}"
   fi
 
   if [ -n "${SERVER_PASSWORD}" ]; then
