@@ -26,7 +26,7 @@ spec:
   - name: direct-port
     port: {{ .Values.config.directPort | int }}
     targetPort: direct-port
-    protocol: TCP
+    protocol: UDP
     {{- if eq .Values.service.type "NodePort" }}
     nodePort: {{ .Values.config.directPort | int }}
     {{- end }}
