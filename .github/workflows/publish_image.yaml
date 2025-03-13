@@ -4,6 +4,7 @@ on:
     types: [published]
 jobs:
   build-push:
+    if: startsWith(github.ref, 'refs/heads/main')
     runs-on: ubuntu-latest
     steps:
       - name: Set up Docker Buildx

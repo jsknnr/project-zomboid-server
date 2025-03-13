@@ -5,6 +5,7 @@ on:
       - '*rc*'
 jobs:
   build-push:
+    if: startsWith(github.ref, 'refs/heads/dev')
     runs-on: ubuntu-latest
     steps:
       - name: Set up Docker Buildx
