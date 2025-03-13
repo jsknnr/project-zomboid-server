@@ -20,6 +20,10 @@ shutdown () {
 
 # Function to start PZ server using updated Java
 start_zomboid () {
+    echo ""
+    echo "$(timestamp) INFO: Starting Project Zomboid Dedicated Server"
+    echo "$(timestamp) INFO: Shutting off the water immediately..."
+    echo "$(timestamp) INFO: Just kidding, let's go!"
     cd "${ZOMBOID_PATH}" || exit 1
     export PATH="${JAVA_HOME}/bin:$PATH"
     export LD_LIBRARY_PATH="${ZOMBOID_PATH}/linux64:${ZOMBOID_PATH}/natives:${ZOMBOID_PATH}:${ZOMBOID_PATH}/jre64/lib/amd64:${LD_LIBRARY_PATH}"
@@ -27,10 +31,11 @@ start_zomboid () {
     LD_PRELOAD="${LD_PRELOAD}:${JSIG}" "${ZOMBOID_PATH}/ProjectZomboid64" "$@" &
 }
 
-# Initialize server configuration if it doesn't exist
+# Initialize server configuration if server.ini or sandboxvars.lua do not exist
 init_server () {
-  if [ ! -f "${SERVER_CONFIG}" ]; then
+  if [ ! -f "${SERVER_CONFIG}" ] || [ ! -f "${SANDBOX_CONFIG}" ]; then
     FIRST_RUN=true
+    echo ""
     echo "$(timestamp) INFO: Initializing server configuration"
     echo "$(timestamp) INFO: Server will run for 60 seconds to generate configuration"
     start_zomboid "${LAUNCH_ARGS[@]}"
@@ -39,6 +44,8 @@ init_server () {
     shutdown
     echo "$(timestamp) INFO: Initialization complete"
     unset FIRST_RUN
+    # Give the init run some time to actually shutdown before continuing
+    sleep 10
   fi
 }
 
@@ -49,6 +56,7 @@ config_editor () {
 
 # Function to edit JVM configuration
 modify_jvm_config () {
+  echo ""
   echo "$(timestamp) INFO: Updating JVM configuration"
   config_editor --action update-jvm --memory "${MAX_MEMORY}" --config "${JVM_CONFIG}"
   echo "$(timestamp) INFO: JVM Xmx and Xms set to ${MAX_MEMORY}"
@@ -56,6 +64,7 @@ modify_jvm_config () {
 
 # Function to edit server configuration
 modify_server_config () {
+  echo ""
   echo "$(timestamp) INFO: Updating server configuration"
   config_editor --config "${SERVER_CONFIG}" --key SaveWorldEveryMinutes --value "${AUTOSAVE_INTERVAL}"
   echo "$(timestamp) INFO: SaveWorldEveryMinutes set to ${AUTOSAVE_INTERVAL} minutes"
@@ -110,10 +119,26 @@ modify_server_config () {
   fi
 }
 
+# Set our variables
+JVM_CONFIG="${ZOMBOID_PATH}/ProjectZomboid64.json"
+SERVER_CONFIG="${ZOMBOID_DATA_PATH}/Server/${SERVER_NAME}.ini"
+SANDBOX_CONFIG="${ZOMBOID_DATA_PATH}/Server/${SERVER_NAME}_SandboxVars.lua"
+LAUNCH_ARGS=(
+  -cachedir="${ZOMBOID_DATA_PATH}"
+  -ip "${SERVER_IP}"
+  -port "${GAME_PORT}"
+  -adminusername "${ADMIN_USERNAME}"
+  -adminpassword "${ADMIN_PASSWORD}"
+  -servername "${SERVER_NAME}"
+)
+
+# Intro
+echo "$(timestamp) INFO: Starting Project Zomboid dedicated server container by jsknnr: https://github.com/jsknnr/project-zomboid-server"
+
 # PZ will not bind to 0.0.0.0, so we need to use the container's IP
 if [ "${SERVER_IP}" == "0.0.0.0" ] || [ -z "${SERVER_IP}" ]; then
   SERVER_IP=$(hostname -i)
-  echo "$(timestamp) INFO: SERVER_IP unusable (e.g. 0.0.0.0) or not set, using container IP: ${SERVER_IP}"
+  echo "$(timestamp) WARN: SERVER_IP unusable (e.g. 0.0.0.0) or not set, using container IP instead: ${SERVER_IP}"
 fi
 
 # Make sure MAX_MEMORY is set, exit 1 if not
@@ -125,6 +150,7 @@ fi
 # Set our variables
 JVM_CONFIG="${ZOMBOID_PATH}/ProjectZomboid64.json"
 SERVER_CONFIG="${ZOMBOID_DATA_PATH}/Server/${SERVER_NAME}.ini"
+SANDBOX_CONFIG="${ZOMBOID_DATA_PATH}/Server/${SERVER_NAME}_SandboxVars.lua"
 LAUNCH_ARGS=(
   -cachedir="${ZOMBOID_DATA_PATH}"
   -ip "${SERVER_IP}"
@@ -146,7 +172,7 @@ init_server
 modify_jvm_config
 modify_server_config
 
-# Start the server
+# Start the server and set process id
 start_zomboid "${LAUNCH_ARGS[@]}"
 zomboid_pid=$!
 

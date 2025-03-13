@@ -177,3 +177,6 @@ helm install zomboid jsknnr/zomboid-dedicated-server --values myvalues.yaml
 
 **Q:** I can't connect to my server, what is wrong? \
 **A:** This is no fault of my image. You need to double check settings on your router and on your container host. Check and then double check firewall rules, dnat/port forwarding rules, etc. If you are still having issues, it is possible that your internet provider (ISP) is using CGNAT (carrier-grade NAT) which can make it really hard if not impossible to host internet facing services from your local network. Call them and discuss.
+
+**Q:** I don't see my server on the in-game browser, what is wrong? \
+**A:** Check your network settings, as listed above. Make sure that you have `PUBLIC` set to `true`. If you have `MAX_PLAYERS` set to 32 or higher you need to tick the box on the bottom that says "Show higher player count servers". If you have `SERVER_PASSWORD` set, you need to also tick that box that says "Show password protected servers".
