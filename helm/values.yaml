@@ -30,7 +30,7 @@ config:
   gamePort: "16261"
   mapNames: "Muldraugh, KY"
   maxMemory: "10g"
-  maxPlayers: "32"
+  maxPlayers: "16"
   modIDs: ""
   modNames: ""
   pauseEmpty: "true"

@@ -31,7 +31,7 @@ Defaults will be used if not specified. If the default is set to `None` this mea
 | GAME_PORT         | Primary port for server.                                                                | 16261                    | False    |
 | MAP_NAMES         | Semi-colon separated list of maps.                                                      | Muldraugh, KY            | False    |
 | MAX_MEMORY        | The max amount of memory to allocate to the server (JVM) (example: "8g" to assign 8GB). | None                     | **True** |
-| MAX_PLAYERS       | Max number of players to be on the server at once.                                      | 32                       | False    |
+| MAX_PLAYERS       | Max number of players to be on the server at once.                                      | 16                       | False    |
 | MOD_IDS           | Semi-colon separated list of mod IDs to load.                                           | None                     | False    |
 | MOD_NAMES         | Semi-colon separated list of mod names to load.                                         | None                     | False    |
 | PAUSE_EMPTY       | Game time stops when no players online.                                                 | true                     | False    |
