@@ -1,0 +1,24 @@
+name: Build and Publish Release Candidate Image
+on:
+  push:
+    tags:
+      - '*rc*'
+jobs:
+  build-push:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+      - name: Login to Docker Hub
+        uses: docker/login-action@v3
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+      - name: Build and push
+        uses: docker/build-push-action@v6
+        with:
+          context: "{{defaultContext}}:/container"
+          file: Containerfile
+          push: true
+          tags: |
+            ${{ secrets.DOCKERHUB_USERNAME }}/zomboid-dedicated-server:${{ github.ref_name }}
