@@ -23,3 +23,6 @@ jobs:
           tags: |
             ${{ secrets.DOCKERHUB_USERNAME }}/zomboid-dedicated-server:latest
             ${{ secrets.DOCKERHUB_USERNAME }}/zomboid-dedicated-server:${{ github.event.release.tag_name }}
+
+
+            

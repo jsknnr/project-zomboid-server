@@ -22,6 +22,7 @@ Defaults will be used if not specified. If the default is set to `None` this mea
 
 | Name              | Description                                                                             | Default                  | Required |
 | ----------------- | --------------------------------------------------------------------------------------- | ------------------------ | -------- |
+| ANTI_CHEAT_TYPE21 | This setting is a usual suspect of relentlessly kicking players when using mods.        | true                     | False    |
 | ADMIN_PASSWORD    | Password for admin user.                                                                | AdminPleaseChangeMe      | False    |
 | ADMIN_USERNAME    | Username for admin user.                                                                | admin                    | False    |
 | AUTOSAVE_INTERVAL | Saves world every N minutes.                                                            | 15                       | False    |
