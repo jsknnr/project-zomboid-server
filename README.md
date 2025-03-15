@@ -33,8 +33,8 @@ Defaults will be used if not specified. If the default is set to `None` this mea
 | MAP_NAMES         | Semi-colon separated list of maps.                                                      | Muldraugh, KY            | False    |
 | MAX_MEMORY        | The max amount of memory to allocate to the server (JVM) (example: "8g" to assign 8GB). | None                     | **True** |
 | MAX_PLAYERS       | Max number of players to be on the server at once.                                      | 16                       | False    |
-| MOD_IDS           | Semi-colon separated list of mod IDs to load.                                           | None                     | False    |
-| MOD_NAMES         | Semi-colon separated list of mod names to load.                                         | None                     | False    |
+| MOD_IDS           | Semi-colon separated list of Workshop IDs to load.                                      | None                     | False    |
+| MOD_NAMES         | Semi-colon separated list of Mod IDs to load.                                           | None                     | False    |
 | PAUSE_EMPTY       | Game time stops when no players online.                                                 | true                     | False    |
 | PING_LIMIT        | Players are kicked for exceeding latency (ping) in milliseconds.                        | 400                      | False    |
 | PVP               | Players can hurt and kill other players if true.                                        | true                     | False    |
@@ -55,7 +55,7 @@ Alternatively, you can modify the configs from the data volume that gets mounted
 
 ### Mods
 
-To use mods, you need to supply the mod's Workshop ID and Mod Name in the environment variables `MOD_IDS` and `MOD_NAMES` respectively. This is a tedius task. There is a utility made by a real hero hosted [Here](https://www.pzutil.com/) that can help with this process.
+To use mods, you need to supply the mod's Workshop ID and Mod ID in the environment variables `MOD_IDS` and `MOD_NAMES` respectively. This is a tedius task. There is a utility made by a real hero hosted [Here](https://www.pzutil.com/) that can help with this process. I have noticed that the utility is not perfect, some times it will double up IDs, some times it will miss part of the Mod ID if there is a space in it. So if you do use that utility, just note that you will likely have to do some hand edits. Alternatively, I wrote my own little utility under the `utils` directory that you can use to generate the ID lists as well.
 
 ### Docker
 
