@@ -1,0 +1,6 @@
+Some Really Cool Mod:
+  workshop_id: 123
+  mod_id: testymod
+This Mod is Also Cool:
+  workshop_id: 456
+  mod_id: testymod2;testymod2-submodthing
