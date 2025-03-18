@@ -22,5 +22,9 @@ jobs:
           cp -rf ../../helm/* ./"${{env.CHART_NAME}}"/
           git remote set-url origin 'https://${{secrets.ACTIONS_GITHUB_TOKEN}}@github.com/jsknnr/helm-charts.git'
           git add .
-          git commit -m "Automated commit from GitHub Actions for ${{env.CHART_NAME}}"
-          git push origin main
+          if git diff-index --quiet HEAD --; then
+            echo "No changes to commit."
+          else
+            git commit -m "Automated commit from GitHub Actions for ${{env.CHART_NAME}}"
+            git push origin main
+          fi
