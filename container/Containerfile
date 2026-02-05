@@ -1,6 +1,5 @@
 FROM debian:13-slim
 
-ARG OPEN_JDK_URL="https://download.java.net/java/GA/jdk23.0.2/6da2a6609d6e406f85c491fcb119101b/7/GPL/openjdk-23.0.2_linux-x64_bin.tar.gz"
 ARG RCON_CLI_URL="https://github.com/gorcon/rcon-cli/releases/download/v0.10.3/rcon-0.10.3-amd64_linux.tar.gz"
 ARG STEAMCMD_URL="https://steamcdn-a.akamaihd.net/client/installer/steamcmd_linux.tar.gz"
 ARG CONTAINER_UID=10000
@@ -12,7 +11,8 @@ ENV ZOMBOID_DATA_PATH="/home/steam/zomboid_data"
 ENV STEAMCMD_PATH="/home/steam/steamcmd"
 ENV STEAM_SDK64_PATH="/home/steam/.steam/sdk64"
 ENV STEAM_APP_ID=380870
-ENV JAVA_HOME="/usr/local/jdk-23.0.2"
+ENV JAVA_HOME="/usr/lib/jvm/java-25-openjdk-amd64"
+ENV PATH="${JAVA_HOME}/bin:${PATH}"
 
 ENV ANTI_CHEAT_TYPE21=true
 ENV ADMIN_PASSWORD="AdminPleaseChangeMe"
@@ -41,14 +41,13 @@ RUN groupadd -g ${CONTAINER_GID} steam \
         ca-certificates \
         curl \
         lib32gcc-s1 \
-        python3.11 \
+        openjdk-25-jre-headless \
+        python3 \
         locales \
         vim \
-    && ln -s /usr/bin/python3.11 /usr/bin/python3 \
     && echo 'LANG="en_US.UTF-8"' > /etc/default/locale \
     && echo "en_US.UTF-8 UTF-8" >> /etc/locale.gen \
     && locale-gen \
-    && curl -sqL "${OPEN_JDK_URL}" | tar zxvf - -C "/usr/local" \
     && curl -sqL "${RCON_CLI_URL}" | tar zxvf - \
     && mv rcon-0.10.3-amd64_linux/rcon /usr/local/bin/rcon \
     && chmod +x /usr/local/bin/rcon \
