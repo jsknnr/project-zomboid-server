@@ -44,3 +44,4 @@ config:
   serverName: "Zomboid Containerized"
   serverPassword: ""
   steamVAC: "true"
+  betaBranch: ""
