@@ -28,6 +28,7 @@ Defaults will be used if not specified. If the default is set to `None` this mea
 | AUTOSAVE_INTERVAL | Saves world every N minutes.                                                            | 15                       | False    |
 | BACKUPS_COUNT     | Number of backups to keep.                                                              | 5                        | False    |
 | BACKUPS_PERIOD    | Creates a backup every N minutes.                                                       | 120                      | False    |
+| BETA_BRANCH       | Beta branch name to install (e.g. 'unstable').                                          | None                     | False    |
 | DIRECT_PORT       | Direct connection port.                                                                 | 16262                    | False    |
 | GAME_PORT         | Primary port for server.                                                                | 16261                    | False    |
 | MAP_NAMES         | Semi-colon separated list of maps.                                                      | Muldraugh, KY            | False    |

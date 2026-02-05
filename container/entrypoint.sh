@@ -164,7 +164,17 @@ LAUNCH_ARGS=(
 
 # Install/Update PZ
 echo "$(timestamp) INFO: Updating Project Zomboid Dedicated Server"
-"${STEAMCMD_PATH}/steamcmd.sh" +force_install_dir "${ZOMBOID_PATH}" +login anonymous +app_update "${STEAM_APP_ID}" validate +quit
+STEAMCMD_ARGS=(
+  +force_install_dir "${ZOMBOID_PATH}"
+  +login anonymous
+  +app_update "${STEAM_APP_ID}"
+  validate
+)
+if [ -n "${BETA_BRANCH}" ]; then
+  STEAMCMD_ARGS+=(-beta "${BETA_BRANCH}")
+fi
+STEAMCMD_ARGS+=(+quit)
+"${STEAMCMD_PATH}/steamcmd.sh" "${STEAMCMD_ARGS[@]}"
 
 # Setup signal handler
 trap 'shutdown' TERM

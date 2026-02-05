@@ -1,4 +1,4 @@
-FROM debian:12-slim
+FROM debian:13-slim
 
 ARG OPEN_JDK_URL="https://download.java.net/java/GA/jdk23.0.2/6da2a6609d6e406f85c491fcb119101b/7/GPL/openjdk-23.0.2_linux-x64_bin.tar.gz"
 ARG RCON_CLI_URL="https://github.com/gorcon/rcon-cli/releases/download/v0.10.3/rcon-0.10.3-amd64_linux.tar.gz"
@@ -31,6 +31,7 @@ ENV PVP=true
 ENV PUBLIC=true
 ENV SERVER_NAME="PZ Containerized"
 ENV STEAM_VAC=true
+ENV BETA_BRANCH=""
 
 RUN groupadd -g ${CONTAINER_GID} steam \
     && useradd -g ${CONTAINER_GID} -u ${CONTAINER_UID} -m steam \
