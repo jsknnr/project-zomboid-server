@@ -1,4 +1,6 @@
-#!/bin/bash
+#!/usr/bin/env bash
+
+zomboid_pid=""
 
 # Quick function to generate a timestamp
 timestamp () {
@@ -25,9 +27,9 @@ start_zomboid () {
     echo "$(timestamp) INFO: Shutting off the water immediately..."
     echo "$(timestamp) INFO: Just kidding, let's go!"
     cd "${ZOMBOID_PATH}" || exit 1
-    export PATH="${JAVA_HOME}/bin:$PATH"
-    export LD_LIBRARY_PATH="${ZOMBOID_PATH}/linux64:${ZOMBOID_PATH}/natives:${ZOMBOID_PATH}:${ZOMBOID_PATH}/jre64/lib/amd64:${LD_LIBRARY_PATH}"
-    JSIG="libjsig.so"
+    export PATH="${JAVA_HOME}/bin:${PATH}"
+    export LD_LIBRARY_PATH="${ZOMBOID_PATH}/linux64:${ZOMBOID_PATH}/natives:${ZOMBOID_PATH}:${JAVA_HOME}/lib/server:${LD_LIBRARY_PATH}"
+    JSIG="${JAVA_HOME}/lib/libjsig.so"
     LD_PRELOAD="${LD_PRELOAD}:${JSIG}" "${ZOMBOID_PATH}/ProjectZomboid64" "$@" &
 }
 
@@ -168,13 +170,22 @@ STEAMCMD_ARGS=(
   +force_install_dir "${ZOMBOID_PATH}"
   +login anonymous
   +app_update "${STEAM_APP_ID}"
-  validate
 )
 if [ -n "${BETA_BRANCH}" ]; then
   STEAMCMD_ARGS+=(-beta "${BETA_BRANCH}")
 fi
+STEAMCMD_ARGS+=(validate)
 STEAMCMD_ARGS+=(+quit)
-"${STEAMCMD_PATH}/steamcmd.sh" "${STEAMCMD_ARGS[@]}"
+if ! "${STEAMCMD_PATH}/steamcmd.sh" "${STEAMCMD_ARGS[@]}"
+then
+  echo "$(timestamp) WARN: steamcmd update failed; removing appmanifest and retrying"
+  rm -f "${ZOMBOID_PATH}/steamapps/appmanifest_${STEAM_APP_ID}.acf"
+  if ! "${STEAMCMD_PATH}/steamcmd.sh" "${STEAMCMD_ARGS[@]}"
+  then
+    echo "$(timestamp) ERROR: steamcmd update failed twice; exiting"
+    exit 1
+  fi
+fi
 
 # Setup signal handler
 trap 'shutdown' TERM
