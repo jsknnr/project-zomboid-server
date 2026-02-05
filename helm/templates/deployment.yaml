@@ -88,6 +88,10 @@ spec:
         - name: SERVER_PASSWORD
           value: {{ .Values.config.serverPassword | squote }}
         {{- end }}
+        {{- if .Values.config.betaBranch }}
+        - name: BETA_BRANCH
+          value: {{ .Values.config.betaBranch | squote }}
+        {{- end }}
         - name: STEAM_VAC
           value: {{ .Values.config.steamVAC | squote }}
         ports:
