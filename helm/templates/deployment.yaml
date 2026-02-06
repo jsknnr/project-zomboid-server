@@ -60,7 +60,7 @@ spec:
         {{- end }}
         {{- if .Values.config.modNames }}
         - name: MOD_NAMES
-          value: {{ .Values.config.modNames | squote }}
+          value: {{ .Values.config.modNames | quote }}
         {{- end }}
         - name: PAUSE_EMPTY
           value: {{ .Values.config.pauseEmpty | squote }}
