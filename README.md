@@ -4,8 +4,6 @@
 
 Run Project Zomboid dedicated server in a container. Optionally includes helm chart for running in Kubernetes.
 
-**Notice:** This image is using OpenJDK 23 instead of the Project Zomboid provided JRE 17. This won't change anything about how you manage or configure your server. I did this because I am trying to get more performance out of the JVM on the backend. OpenJDK 23 has additional bug fixes, performance optimizations, and garbage collection (GC) enhancements that the version that ships with the dedicated server software does not have.
-
 **Disclaimer:** This is not an official image. No support, implied or otherwise is offered to any end user by the author or anyone else. Feel free to do what you please with the contents of this repo.
 
 ## Ports

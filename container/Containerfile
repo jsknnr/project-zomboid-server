@@ -11,7 +11,7 @@ ENV ZOMBOID_DATA_PATH="/home/steam/zomboid_data"
 ENV STEAMCMD_PATH="/home/steam/steamcmd"
 ENV STEAM_SDK64_PATH="/home/steam/.steam/sdk64"
 ENV STEAM_APP_ID=380870
-ENV JAVA_HOME="/usr/lib/jvm/java-25-openjdk-amd64"
+ENV JAVA_HOME="/home/steam/zomboid/jre64"
 ENV PATH="${JAVA_HOME}/bin:${PATH}"
 
 ENV ANTI_CHEAT_TYPE21=true
@@ -41,7 +41,6 @@ RUN groupadd -g ${CONTAINER_GID} steam \
         ca-certificates \
         curl \
         lib32gcc-s1 \
-        openjdk-25-jre-headless \
         python3 \
         locales \
         vim \
