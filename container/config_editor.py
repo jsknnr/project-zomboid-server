@@ -55,17 +55,6 @@ def update_jvm_config(file_path: str, max_memory: str) -> None:
     # Add new settings
     config['vmArgs'].append(f'-Xmx{max_memory}')
     config['vmArgs'].append(f'-Xms{max_memory}')
-    # Deprecated in Java 23, is default in Java 23
-    if '-XX:+ZGenerational' not in config['vmArgs']:
-        config['vmArgs'].append('-XX:+ZGenerational')
-    if '-XX:+AlwaysPreTouch' not in config['vmArgs']:
-        config['vmArgs'].append('-XX:+AlwaysPreTouch')
-    if '-XX:+PerfDisableSharedMem' not in config['vmArgs']:
-        config['vmArgs'].append('-XX:+PerfDisableSharedMem')
-    if '-XX:+UseStringDeduplication' not in config['vmArgs']:
-        config['vmArgs'].append('-XX:+UseStringDeduplication')
-    if '-XX:+ParallelRefProcEnabled' not in config['vmArgs']:
-        config['vmArgs'].append('-XX:+ParallelRefProcEnabled')
 
     # Write new JSON configuration
     with open(file_path, 'w') as config_file:
