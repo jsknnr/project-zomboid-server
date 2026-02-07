@@ -1,4 +1,4 @@
-FROM debian:13-slim
+FROM debian:12-slim
 
 ARG RCON_CLI_URL="https://github.com/gorcon/rcon-cli/releases/download/v0.10.3/rcon-0.10.3-amd64_linux.tar.gz"
 ARG STEAMCMD_URL="https://steamcdn-a.akamaihd.net/client/installer/steamcmd_linux.tar.gz"
